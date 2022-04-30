@@ -9,6 +9,9 @@ import (
 )
 
 func main() {
+	// Initialize books
+	InitializeBooks()
+
 	// declare a router handler
 	r := mux.NewRouter()
 

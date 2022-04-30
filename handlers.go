@@ -21,26 +21,23 @@ func GetAllBooks(w http.ResponseWriter, r *http.Request) {
 
 // get single book handler
 func GetSingleBook(w http.ResponseWriter, r *http.Request) {
-	// get the id of the required book
-	id := mux.Vars(r)["id"]
-
 	// set headers
 	w.Header().Set("Content-Type", "application/json")
 
-	// get all books from db
-	books := GetBooksFromDB()
+	// get the id of the required book
+	id := mux.Vars(r)["id"]
 
-	// loop through all books
-	for _, book := range books {
-		if book.Id == id {
-			// return the book back
-			json.NewEncoder(w).Encode(book)
-			return
-		}
+	// get single book by id
+	book, err := GetSingleBookById(id)
+
+	if err != nil {
+		// not found
+		w.WriteHeader(http.StatusNotFound)
+		return
 	}
 
-	// not found
-	w.WriteHeader(http.StatusNotFound)
+	// return the book
+	json.NewEncoder(w).Encode(book)
 }
 
 // update a book handler
