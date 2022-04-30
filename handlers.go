@@ -9,7 +9,26 @@ import (
 
 // create book handler
 func CreateBook(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
 
+	// define book and decode the body
+	var book Book
+	json.NewDecoder(r.Body).Decode(&book)
+
+	// check book validity
+	if book.Title == "" || book.Pages == 0 || book.Isbn == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	// add the book to the DB
+	addedBook, err := AddBookToDB(book)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(addedBook)
 }
 
 // get all books handler

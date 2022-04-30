@@ -1,6 +1,10 @@
 package main
 
-import "errors"
+import (
+	"errors"
+
+	"github.com/google/uuid"
+)
 
 var books []Book
 
@@ -28,4 +32,23 @@ func GetSingleBookById(id string) (book Book, err error) {
 	}
 
 	return Book{}, errors.New("not found any book")
+}
+
+// Add to the books
+func AddBookToDB(book Book) (bookAdded Book, err error) {
+	// get the length of the books slice before appending
+	l := len(books)
+
+	// add id to the book
+	book.Id = uuid.New().String()
+
+	// add the book
+	books = append(books, book)
+
+	// check the length
+	if l == len(books) {
+		return Book{}, errors.New("unable to add book")
+	}
+
+	return book, nil
 }
