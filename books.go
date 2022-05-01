@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"strconv"
 
 	"github.com/google/uuid"
 )
@@ -64,4 +65,27 @@ func DeleteBookFromDB(id string) (bookDeleted Book, err error) {
 		}
 	}
 	return Book{}, errors.New("book not found")
+}
+
+// Update book from DB
+func UpdateBookInDB(id string, updateFields map[string]string) (updatedBook Book, err error) {
+	// loop through all books
+	for i, book := range books {
+		if book.Id == id {
+			// update the fields
+			for key, val := range updateFields {
+				if key == "pages" {
+					book.Pages, _ = strconv.ParseInt(val, 10, 64)
+				} else if key == "isbn" {
+					book.Isbn = val
+				} else if key == "title" {
+					book.Title = val
+				}
+			}
+			books[i] = book
+			return book, nil
+		}
+	}
+
+	return Book{}, errors.New("unable to find the book")
 }

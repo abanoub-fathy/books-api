@@ -19,7 +19,7 @@ func main() {
 	r.HandleFunc("/api/v1/books", CreateBook).Methods("POST")
 	r.HandleFunc("/api/v1/books", GetAllBooks).Methods("GET")
 	r.HandleFunc("/api/v1/books/{id}", GetSingleBook).Methods("GET")
-	r.HandleFunc("/api/v1/books/{id}", UpdateSingleBook).Methods("PUT")
+	r.HandleFunc("/api/v1/books/{id}", UpdateSingleBook).Methods("PATCH")
 	r.HandleFunc("/api/v1/books/{id}", DeleteBook).Methods("DELETE")
 
 	// launch server

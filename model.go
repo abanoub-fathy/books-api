@@ -4,7 +4,7 @@ package main
 type Book struct {
 	Id     string `json:"id"`
 	Isbn   string `json:"isbn"`
-	Pages  int    `json:"pages"`
+	Pages  int64  `json:"pages"`
 	Title  string `json:"title"`
 	Author Author `json:"author"`
 }

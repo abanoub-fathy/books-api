@@ -61,7 +61,25 @@ func GetSingleBook(w http.ResponseWriter, r *http.Request) {
 
 // update a book handler
 func UpdateSingleBook(w http.ResponseWriter, r *http.Request) {
+	// set headers
+	w.Header().Set("Content-Type", "application/json")
 
+	// define updates and decode the body
+	var updates map[string]string
+	json.NewDecoder(r.Body).Decode(&updates)
+
+	// get book id
+	bookId := mux.Vars(r)["id"]
+	updatedBook, err := UpdateBookInDB(bookId, updates)
+
+	// error return not found
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	// return updated book
+	json.NewEncoder(w).Encode(updatedBook)
 }
 
 // delete a book handler
