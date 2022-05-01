@@ -52,3 +52,16 @@ func AddBookToDB(book Book) (bookAdded Book, err error) {
 
 	return book, nil
 }
+
+// Delete book from DB
+func DeleteBookFromDB(id string) (bookDeleted Book, err error) {
+	// loop until find the book with this id
+	for i, book := range books {
+		if book.Id == id {
+			bookDeleted := book
+			books = append(books[:i], books[i+1:]...)
+			return bookDeleted, nil
+		}
+	}
+	return Book{}, errors.New("book not found")
+}

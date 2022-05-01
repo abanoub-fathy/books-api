@@ -66,5 +66,20 @@ func UpdateSingleBook(w http.ResponseWriter, r *http.Request) {
 
 // delete a book handler
 func DeleteBook(w http.ResponseWriter, r *http.Request) {
+	// set headers
+	w.Header().Set("Content-Type", "application/json")
+
+	// get book id
+	bookId := mux.Vars(r)["id"]
+	bookDeleted, err := DeleteBookFromDB(bookId)
+
+	// error return not found
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	// return the book that deleted
+	json.NewEncoder(w).Encode(bookDeleted)
 
 }
